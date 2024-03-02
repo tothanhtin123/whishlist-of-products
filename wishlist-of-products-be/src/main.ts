@@ -5,7 +5,7 @@ import { CommonConfigService } from './modules/shared/common-config/common-confi
 import { Logger, VersioningType } from '@nestjs/common';
 import helmet from 'helmet';
 import { setupSwagger } from './setup-swagger';
-
+import { middleware as expressCtx } from 'express-ctx';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.select(SharedModule).get(CommonConfigService);
@@ -22,6 +22,8 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+
+  app.use(expressCtx);
 
   if (config.appConfig.enableDoc) {
     setupSwagger(app);
