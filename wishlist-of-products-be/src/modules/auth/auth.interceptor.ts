@@ -1,5 +1,9 @@
-import { UseInterceptors, applyDecorators } from '@nestjs/common';
-import { UserInterceptor } from '../user/user.interceptor';
+import { LoginResponseDto } from './dtos/login-response.dto';
+import { MongooseClassSerializerInterceptor } from 'src/common/interceptors/response-serialize.interceptor';
+import { RegisterResponseDto } from './dtos/register-response.dto';
 
 export const UseRegisterInterceptor = () =>
-  applyDecorators(UseInterceptors(UserInterceptor));
+  MongooseClassSerializerInterceptor(RegisterResponseDto);
+
+export const UseLoginInterceptor = () =>
+  MongooseClassSerializerInterceptor(LoginResponseDto);
