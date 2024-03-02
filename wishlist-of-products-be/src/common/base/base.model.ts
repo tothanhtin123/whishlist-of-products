@@ -4,6 +4,8 @@ import {
   Prop,
   SchemaFactory,
 } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { UserModel } from 'src/modules/user/models/user.model';
 
 export class BaseModel {
   /** ObjectId */
@@ -17,6 +19,16 @@ export class BaseModel {
 
   @Prop({ type: Date, default: null })
   deletedAt?: Date | null;
+
+    @Prop({
+      type:mongoose.Schema.ObjectId,
+  })
+  createdById?: string;
+
+  @Prop({
+      type:mongoose.Schema.ObjectId,
+  })
+  updatedById?: string;
 }
 
 export const Schema = (collection?: string) =>
@@ -34,6 +46,18 @@ export const createSchema = (target: Type<BaseModel>) => {
   });
   schema.virtual('id').get(function () {
     return this._id.toString();
+  });
+  schema.virtual('createdBy',{
+    ref: UserModel.name,
+    localField: 'createdById',
+    foreignField: '_id',
+    justOne: true
+  });
+  schema.virtual('updatedBy',{
+    ref: UserModel.name,
+    localField: 'createdById',
+    foreignField: '_id',
+    justOne: true
   });
   return schema;
 };

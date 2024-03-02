@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { FilterQuery, SortOrder } from 'mongoose';
 import { IsNumber } from '../decorators/validation.decorator';
+import { User } from '../decorators/user.decorator';
+import { UserResponseDto } from 'src/modules/user/dtos/user-response.dto';
 
 export class PaginationDto {
   @IsOptional()
@@ -71,4 +73,14 @@ export class BaseResponse {
   @ApiProperty({ description: 'Deleted Date' })
   @Expose()
   deletedAt?: Date;
+
+  @ApiProperty({description: 'Data was created by user'})
+  @Type(() => UserResponseDto)
+  @Expose()
+  createdBy?: UserResponseDto;
+
+  @ApiProperty({description: 'Date was updated by user'})
+  @Type(() => UserResponseDto)
+  @Expose()
+  updatedBy?: UserResponseDto;
 }

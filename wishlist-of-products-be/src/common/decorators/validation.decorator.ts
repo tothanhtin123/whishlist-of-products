@@ -46,6 +46,16 @@ export const IsDateString = (validationOptions?: validator.ValidationOptions) =>
     ),
   );
 
+  export const IsEnum = (
+    entity: object,
+    validationOptions?: validator.ValidationOptions,
+  ) =>
+    applyDecorators(
+      validator.IsEnum(entity, {
+        ...validationOptions,
+      }),
+    );
+
 export const Min = (
   minValue: number,
   validationOptions?: validator.ValidationOptions,
