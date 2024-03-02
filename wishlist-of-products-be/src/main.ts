@@ -14,20 +14,20 @@ async function bootstrap() {
   app.use(helmet());
 
   app.enableCors({
-		origin: true,
-		credentials: true
-	});
+    origin: true,
+    credentials: true,
+  });
 
   app.enableVersioning({
-		type: VersioningType.URI,
-		defaultVersion: '1'
-	});
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
 
   if (config.appConfig.enableDoc) {
-		setupSwagger(app);
-	}
+    setupSwagger(app);
+  }
 
-  await app.listen(port,()=>{
+  await app.listen(port, () => {
     Logger.log(`This app is running on port: ${port}`);
   });
 }

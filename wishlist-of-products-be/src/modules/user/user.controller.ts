@@ -7,12 +7,11 @@ import { UserResponseDto } from './dtos/user-response.dto';
 
 @Controller('user')
 export class UserController {
-    constructor (private readonly userService: UserService){}
-    @Post()
-    @ApiCreate(UserResponseDto,'User')
-    @UseUserInterceptor()
-    create(@Body() createUserDto: CreateUserDto){
-        return this.userService.create(createUserDto);
-    }
-    
+  constructor(private readonly userService: UserService) {}
+  @Post()
+  @ApiCreate(UserResponseDto, 'User')
+  @UseUserInterceptor()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
 }

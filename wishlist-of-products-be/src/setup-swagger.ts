@@ -2,10 +2,10 @@ import type { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export const setupSwagger = (app: INestApplication) => {
-	const documentBuilder = new DocumentBuilder()
-		.setTitle('API')
-		.setDescription(
-			`### REST
+  const documentBuilder = new DocumentBuilder()
+    .setTitle('API')
+    .setDescription(
+      `### REST
 Routes is following REST standard (Richardson level 3)
 
 <details><summary>Detailed specification</summary>
@@ -46,17 +46,17 @@ Routes is following REST standard (Richardson level 3)
       - The **<user_id>** have no access to **<resource_id>**
 </p>
 </details>`,
-		)
-		.addBearerAuth();
+    )
+    .addBearerAuth();
 
-	if (process.env.API_VERSION) {
-		documentBuilder.setVersion(process.env.API_VERSION);
-	}
+  if (process.env.API_VERSION) {
+    documentBuilder.setVersion(process.env.API_VERSION);
+  }
 
-	// app module - all
-	const document = SwaggerModule.createDocument(app, documentBuilder.build());
-	SwaggerModule.setup('/documentation', app, document);
-	console.info(
-		`Documentation: http://localhost:${process.env.PORT}/documentation`,
-	);
+  // app module - all
+  const document = SwaggerModule.createDocument(app, documentBuilder.build());
+  SwaggerModule.setup('/documentation', app, document);
+  console.info(
+    `Documentation: http://localhost:${process.env.PORT}/documentation`,
+  );
 };
