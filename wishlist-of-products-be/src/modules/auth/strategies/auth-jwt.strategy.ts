@@ -22,7 +22,6 @@ export class AuthJwtStrategy extends PassportStrategy(
   }
 
   async validate(payload: UserJwtPayload) {
-    console.log('dfdf');
     const { id } = payload;
     const service = this.authService.getUserService();
     return service.validUserById(id);

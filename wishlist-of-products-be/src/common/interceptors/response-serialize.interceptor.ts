@@ -12,14 +12,6 @@ export class ResponseSerializeInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, handler: CallHandler): Observable<any> {
     return handler.handle().pipe(
       map((data: any) => {
-        //fix error when mongo model (data) put all data of it into _doc field
-        //we need to get them in _doc
-        if (data?._doc) {
-          data = {
-            ...data,
-            ...data._doc,
-          };
-        }
         return plainToClass(this.dto, data, {
           excludeExtraneousValues: true,
         });

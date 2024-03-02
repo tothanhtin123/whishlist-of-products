@@ -1,9 +1,10 @@
-import { Body, ConflictException, Controller, Post } from '@nestjs/common';
+import { Body, ConflictException, Controller, Get, Post } from '@nestjs/common';
 import { RegisterDto } from './dtos/register.dto';
 import { UserService } from '../user/user.service';
 import {
   UseLoginInterceptor,
   UseRegisterInterceptor,
+  UseVerifyInterceptor,
 } from './auth.interceptor';
 import { LoginDto } from './dtos/login.dto';
 import { JwtService } from '../shared/jwt/jwt.service';
@@ -44,9 +45,13 @@ export class AuthController {
       email: user.email,
       id: user.id,
     });
-    return {
-      ...user,
-      accessToken,
-    };
+    return Object.assign(user, { accessToken });
+  }
+
+  @Get('verify')
+  @UseUserGuard(AuthStrategy.JWT)
+  @UseVerifyInterceptor()
+  async verify(@User() user: User) {
+    return user;
   }
 }
