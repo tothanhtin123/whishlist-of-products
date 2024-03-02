@@ -19,6 +19,10 @@ export class UserService extends BaseService<UserModel> {
   }
   notFoundMessage: string = errorMessages.notFound;
 
+  async validUserById(id: string) {
+    return this.getOneByIdOrFail(id);
+  }
+
   async validUserByEmailAndPassword(email: string, password: string) {
     const user = await this.getOne({ where: { email } });
     if (!user) {

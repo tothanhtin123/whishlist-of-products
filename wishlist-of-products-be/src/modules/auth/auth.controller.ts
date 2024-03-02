@@ -9,6 +9,9 @@ import { LoginDto } from './dtos/login.dto';
 import { JwtService } from '../shared/jwt/jwt.service';
 import { LoginResponseDto } from './dtos/login-response.dto';
 import { RegisterResponseDto } from './dtos/register-response.dto';
+import { User } from 'src/common/decorators/user.decorator';
+import { UseUserGuard } from 'src/common/decorators/use-user-guard.decorator';
+import { AuthStrategy } from './auth.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -31,14 +34,16 @@ export class AuthController {
   }
 
   @Post('login')
+  @UseUserGuard(AuthStrategy.LOCAL)
   @UseLoginInterceptor()
-  async login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
-    const { email, password } = loginDto;
-    const user = await this.userService.validUserByEmailAndPassword(
-      email,
-      password,
-    );
-    const accessToken = await this.jwtService.sign({ email, id: user.id });
+  async login(
+    @Body() _loginDto: LoginDto,
+    @User() user: User,
+  ): Promise<LoginResponseDto> {
+    const accessToken = await this.jwtService.sign({
+      email: user.email,
+      id: user.id,
+    });
     return {
       ...user,
       accessToken,
