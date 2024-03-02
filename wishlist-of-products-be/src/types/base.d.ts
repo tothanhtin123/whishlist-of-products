@@ -20,6 +20,8 @@ declare global {
     withDeleted?: boolean;
     /** select fields */
     select?: string | string[];
+    /** get created updated user */
+    withCreatedUpdatedBy?: boolean;
   };
 
   type FindOrFailOptions<T extends BaseModel> = FindOptions<T> & {

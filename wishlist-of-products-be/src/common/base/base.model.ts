@@ -20,13 +20,13 @@ export class BaseModel {
   @Prop({ type: Date, default: null })
   deletedAt?: Date | null;
 
-    @Prop({
-      type:mongoose.Schema.ObjectId,
+  @Prop({
+    type: mongoose.Schema.ObjectId,
   })
   createdById?: string;
 
   @Prop({
-      type:mongoose.Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
   })
   updatedById?: string;
 }
@@ -47,17 +47,17 @@ export const createSchema = (target: Type<BaseModel>) => {
   schema.virtual('id').get(function () {
     return this._id.toString();
   });
-  schema.virtual('createdBy',{
+  schema.virtual('createdBy', {
     ref: UserModel.name,
     localField: 'createdById',
     foreignField: '_id',
-    justOne: true
+    justOne: true,
   });
-  schema.virtual('updatedBy',{
+  schema.virtual('updatedBy', {
     ref: UserModel.name,
     localField: 'createdById',
     foreignField: '_id',
-    justOne: true
+    justOne: true,
   });
   return schema;
 };

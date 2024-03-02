@@ -7,8 +7,11 @@ import { errorMessages } from './product.error';
 
 @Injectable()
 export class ProductService extends BaseService<ProductModel> {
-    notFoundMessage: string = errorMessages.notFound;
-    constructor(@InjectModel(ProductModel.name) private readonly productModel: Model<ProductModel>){
-        super(productModel)
-    }
+  notFoundMessage: string = errorMessages.notFound;
+  constructor(
+    @InjectModel(ProductModel.name)
+    private readonly productModel: Model<ProductModel>,
+  ) {
+    super(productModel);
+  }
 }

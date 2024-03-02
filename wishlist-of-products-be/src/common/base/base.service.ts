@@ -15,6 +15,7 @@ import {
 } from 'mongoose';
 import { AbstractBaseService } from './base.interface';
 import { BaseModel } from './base.model';
+import { createdUpdatedByRelations } from 'src/consts/relations.const';
 
 /**
  * BaseService là một class bao gồm các method viết sẵn phục vụ cho việc thêm xóa sửa. Nó được kế thừa bởi class khác.
@@ -43,7 +44,14 @@ export abstract class BaseService<
   }
 
   getOne(options: FindOptions<T>): Promise<T | null> {
-    const { where, sort, relations, withDeleted, select } = options;
+    const {
+      where,
+      sort,
+      relations,
+      withDeleted,
+      select,
+      withCreatedUpdatedBy = true,
+    } = options;
     const filter = { ...where };
     if (!withDeleted) {
       set(filter, 'deletedAt', null);
@@ -56,9 +64,19 @@ export abstract class BaseService<
       //@ts-ignore
       query = query.select(select);
     }
+
+    const overrideRelations = [];
+    if (withCreatedUpdatedBy) {
+      overrideRelations.push(...createdUpdatedByRelations);
+    }
     if (relations) {
+      overrideRelations.push(
+        ...(typeof relations === 'string' ? [relations] : relations),
+      );
+    }
+    if (overrideRelations.length > 0) {
       //@ts-ignore
-      query = query.populate(relations);
+      query = query.populate(overrideRelations);
     }
     return query.exec();
   }
