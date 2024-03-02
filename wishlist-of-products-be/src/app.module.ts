@@ -5,6 +5,9 @@ import { SharedModule } from './modules/shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommonConfigService } from './modules/shared/common-config/common-config.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { providers } from './app.provider';
 
 @Module({
   imports: [
@@ -27,8 +30,10 @@ import { CommonConfigService } from './modules/shared/common-config/common-confi
 			inject: [CommonConfigService],
 		}),
     SharedModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [...providers],
 })
 export class AppModule {}
