@@ -22,7 +22,7 @@ export class PaginationDto {
   @Transform(({ value }) => JSON.parse(value || '{}'))
   @ApiProperty({
     description: 'Sort',
-    example: '{ "createdAt": "ASC" }',
+    example: '{ "createdAt": "asc" }',
     type: 'string',
   })
   sort?: Record<string, SortOrder>;

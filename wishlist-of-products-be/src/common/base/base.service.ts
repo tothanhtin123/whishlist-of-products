@@ -17,6 +17,25 @@ import { AbstractBaseService } from './base.interface';
 import { BaseModel } from './base.model';
 import { createdUpdatedByRelations } from 'src/consts/relations.const';
 
+const createOverrideRelations = ({
+  withCreatedUpdatedBy,
+  relations,
+}: {
+  withCreatedUpdatedBy?: boolean;
+  relations: string | string[];
+}) => {
+  const overrideRelations = [];
+  if (withCreatedUpdatedBy) {
+    overrideRelations.push(...createdUpdatedByRelations);
+  }
+  if (relations) {
+    overrideRelations.push(
+      ...(typeof relations === 'string' ? [relations] : relations),
+    );
+  }
+  return overrideRelations;
+};
+
 /**
  * BaseService là một class bao gồm các method viết sẵn phục vụ cho việc thêm xóa sửa. Nó được kế thừa bởi class khác.
  * @template T Kiểu dữ liệu của record
@@ -65,15 +84,10 @@ export abstract class BaseService<
       query = query.select(select);
     }
 
-    const overrideRelations = [];
-    if (withCreatedUpdatedBy) {
-      overrideRelations.push(...createdUpdatedByRelations);
-    }
-    if (relations) {
-      overrideRelations.push(
-        ...(typeof relations === 'string' ? [relations] : relations),
-      );
-    }
+    const overrideRelations = createOverrideRelations({
+      withCreatedUpdatedBy,
+      relations,
+    });
     if (overrideRelations.length > 0) {
       //@ts-ignore
       query = query.populate(overrideRelations);
@@ -115,7 +129,14 @@ export abstract class BaseService<
   }
 
   getAll(options: Partial<FindOptions<T>>): Promise<T[]> {
-    const { where, sort, relations, withDeleted, select } = options;
+    const {
+      where,
+      sort,
+      relations,
+      withDeleted,
+      select,
+      withCreatedUpdatedBy = true,
+    } = options;
     const filter = { ...where };
     if (!withDeleted) {
       set(filter, 'deletedAt', null);
@@ -128,9 +149,13 @@ export abstract class BaseService<
       //@ts-ignore
       query = query.select(select);
     }
-    if (relations) {
+    const overrideRelations = createOverrideRelations({
+      withCreatedUpdatedBy,
+      relations,
+    });
+    if (overrideRelations.length > 0) {
       //@ts-ignore
-      query = query.populate(relations);
+      query = query.populate(overrideRelations);
     }
     return query.exec();
   }
@@ -147,6 +172,10 @@ export abstract class BaseService<
     const limit = +(options.limit || 10);
     const page = +(options.page || 1);
     const skip = limit === -1 ? 0 : limit * (+page - 1);
+    const withCreatedUpdatedBy =
+      typeof options.withCreatedUpdatedBy === 'boolean'
+        ? options.withCreatedUpdatedBy
+        : true;
 
     if (!withDeleted) {
       set(where, 'deletedAt', null);
@@ -164,9 +193,13 @@ export abstract class BaseService<
     if (sort) {
       query = query.sort(sort);
     }
-    if (relations) {
+    const overrideRelations = createOverrideRelations({
+      withCreatedUpdatedBy,
+      relations,
+    });
+    if (overrideRelations.length > 0) {
       //@ts-ignore
-      query = query.populate(relations);
+      query = query.populate(overrideRelations);
     }
     const data = await query.exec();
     const total = await this.model.countDocuments(where);

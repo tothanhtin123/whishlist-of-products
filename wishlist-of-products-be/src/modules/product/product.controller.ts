@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { UseUserGuard } from 'src/common/decorators/use-user-guard.decorator';
@@ -15,10 +16,12 @@ import { User } from 'src/common/decorators/user.decorator';
 import {
   UseCreateProductInterceptor,
   UseDeleteProductInterceptor,
+  UseGetManyProductsInterceptor,
   UseGetProductInterceptor,
   UseUpdateProductInterceptor,
 } from './product.interceptor';
 import { UpdateProductDto } from './dtos/update-product.dto';
+import { PaginationDto } from 'src/common/base/base.dto';
 
 @Controller('product')
 @UseUserGuard(AuthStrategy.JWT)
@@ -39,6 +42,12 @@ export class ProductController {
   @UseGetProductInterceptor()
   getOne(@Param('id') id: string) {
     return this.productService.getOneById(id);
+  }
+
+  @Get()
+  @UseGetManyProductsInterceptor()
+  getMany(@Query() query: PaginationDto) {
+    return this.productService.getAllPaginated(query);
   }
 
   @Patch(':id')
