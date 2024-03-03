@@ -1,3 +1,3 @@
 export const errorMessages = {
-    uploadedFileNotFound:'Uploaded File is not found'
-}
+  uploadedFileNotFound: 'Uploaded File is not found',
+};

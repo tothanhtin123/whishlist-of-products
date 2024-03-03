@@ -6,11 +6,11 @@ import { MulterModule } from '@nestjs/platform-express';
 import { FileHandlerModule } from './file-handler/file-handler.module';
 
 @Module({
-  imports:[
+  imports: [
     MulterModule.registerAsync({
-      useClass:MulterConfigService,
+      useClass: MulterConfigService,
     }),
-    FileHandlerModule
+    FileHandlerModule,
   ],
   controllers: [FileStorageController],
   providers: [FileStorageService],

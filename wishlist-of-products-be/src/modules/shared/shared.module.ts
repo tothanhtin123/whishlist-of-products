@@ -4,7 +4,11 @@ import { JwtModule } from './jwt/jwt.module';
 import { FirebaseAdminService } from './firebase/firebase-admin.service';
 import { FileHelperService } from './file/file-helper.service';
 
-const providers = [CommonConfigService, FirebaseAdminService, FileHelperService];
+const providers = [
+  CommonConfigService,
+  FirebaseAdminService,
+  FileHelperService,
+];
 
 @Global()
 @Module({

@@ -1,4 +1,4 @@
 export enum FileHandlerProvider {
-    LOCAL = 'LOCAL',
-    FIREBASE = 'FIREBASE'
+  LOCAL = 'LOCAL',
+  FIREBASE = 'FIREBASE',
 }

@@ -1,4 +1,4 @@
-declare global{
-    type UploadedFile = Express.Multer.File
+declare global {
+  type UploadedFile = Express.Multer.File;
 }
-export{}
+export {};

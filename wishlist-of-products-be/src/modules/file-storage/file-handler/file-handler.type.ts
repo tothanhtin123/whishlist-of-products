@@ -1,7 +1,7 @@
-import { FileHandlerProvider } from "./file-handler.enum"
+import { FileHandlerProvider } from './file-handler.enum';
 
 export type SaveFileResult = {
-    publicUrl: string,
-    path:string,
-    provider: FileHandlerProvider
-}
+  publicUrl: string;
+  path: string;
+  provider: FileHandlerProvider;
+};

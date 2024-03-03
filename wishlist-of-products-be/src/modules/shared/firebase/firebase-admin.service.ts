@@ -10,8 +10,8 @@ export class FirebaseAdminService {
   private firebaseStorage: FirebaseStorage;
   constructor(private readonly config: CommonConfigService) {
     admin.initializeApp({
-      credential:admin.credential.cert(config.firebaseConfig),
-      storageBucket:config.firebaseConfig.storageBucket
+      credential: admin.credential.cert(config.firebaseConfig),
+      storageBucket: config.firebaseConfig.storageBucket,
     });
     if (admin.apps.length > 0) {
       Logger.log('Connection to Firebase successful');
@@ -29,7 +29,7 @@ export class FirebaseAdminService {
     return this.firebaseStorage;
   }
 
-  get bucket(){
+  get bucket() {
     return this.firebaseStorage.bucket();
   }
 }
