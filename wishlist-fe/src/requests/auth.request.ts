@@ -8,3 +8,6 @@ export const registerRequest = (data: RegisterUserPayload): ApiResponse<ApiSucce
 
 export const loginRequest = (data: LoginPayload): ApiResponse<ApiSuccessData<User>> =>
   api.post(`${authApiPrefix}/login`, data);
+
+export const verifyAccessTokenRequest = (): ApiResponse<ApiSuccessData<User>> =>
+  api.get(`${authApiPrefix}/verify`);

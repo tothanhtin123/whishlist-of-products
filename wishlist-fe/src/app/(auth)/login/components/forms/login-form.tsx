@@ -1,6 +1,7 @@
 "use client";
 import { appConfig } from "@/consts/app-config";
 import { loginRequest } from "@/requests/auth.request";
+import { localAuthService } from "@/services/auth/local-auth";
 import { Button } from "@/shared/components/ui/button";
 import {
   Form,
@@ -48,6 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           title: "Login successfully",
           description: "You will be moved to your wishlist",
         });
+        localAuthService.accessToken = result.data.data.accessToken;
         router.push(`${appConfig.wishlistPage}`);
       }
     } catch (error: any) {
