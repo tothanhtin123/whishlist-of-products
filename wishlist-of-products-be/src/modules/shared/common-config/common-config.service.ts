@@ -82,6 +82,21 @@ export class CommonConfigService {
     };
   }
 
+  get firebaseConfig() {
+    return {
+      private_key_id: this.getString('FIREBASE_PRIVATE_KEY_ID'),
+      private_key: this.getString('FIREBASE_PRIVATE_KEY'),
+      client_email: this.getString('FIREBASE_CLIENT_EMAIL'),
+      apiKey: this.getString('FIREBASE_API_KEY'),
+      authDomain: this.getString('FIREBASE_AUTH_DOMAIN'),
+      projectId: this.getString('FIREBASE_PROJECT_ID'),
+      storageBucket: this.getString('FIREBASE_STORAGE_BUCKET'),
+      messagingSenderId: this.getString('FIREBASE_MESSAGING_SENDER_ID'),
+      appId: this.getString('FIREBASE_APP_ID'),
+      measurementId: this.getString('FIREBASE_MEASUREMENT_ID'),
+    };
+  }
+
   private get(key: string): string {
     const value = this.configService.get<string>(key);
 
