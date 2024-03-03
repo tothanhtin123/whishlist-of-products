@@ -8,6 +8,7 @@ import {
   Min,
 } from 'src/common/decorators/validation.decorator';
 import { ProductCategory, ProductType } from '../product.enum';
+import { IsOptional } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -28,4 +29,8 @@ export class CreateProductDto {
   @IsNumber()
   @Min(1000)
   price: number;
+
+  @IsString()
+  @IsOptional()
+  thumbnailId?: string;
 }

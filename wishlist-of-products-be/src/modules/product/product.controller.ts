@@ -41,13 +41,16 @@ export class ProductController {
   @Get(':id')
   @UseGetProductInterceptor()
   getOne(@Param('id') id: string) {
-    return this.productService.getOneById(id);
+    return this.productService.getOneById(id, { relations: ['thumbnail'] });
   }
 
   @Get()
   @UseGetManyProductsInterceptor()
   getMany(@Query() query: PaginationDto) {
-    return this.productService.getAllPaginated(query);
+    return this.productService.getAllPaginated({
+      ...query,
+      relations: ['thumbnail'],
+    });
   }
 
   @Patch(':id')
@@ -57,10 +60,14 @@ export class ProductController {
     @Body() updateProductDto: UpdateProductDto,
     @User() user: User,
   ) {
-    return this.productService.updateById(id, {
-      ...updateProductDto,
-      updatedById: user.id,
-    });
+    return this.productService.updateById(
+      id,
+      {
+        ...updateProductDto,
+        updatedById: user.id,
+      },
+      { relations: ['thumbnail'] },
+    );
   }
 
   @Delete(':id')

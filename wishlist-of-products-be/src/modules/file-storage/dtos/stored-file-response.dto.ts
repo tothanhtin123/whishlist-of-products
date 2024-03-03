@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { BaseResponse } from 'src/common/base/base.dto';
 
-export class StoredFileResponse extends BaseResponse {
+export class StoredFileResponseDto extends BaseResponse {
   @Expose()
   name: string;
 
