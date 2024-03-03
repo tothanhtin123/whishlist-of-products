@@ -9,7 +9,10 @@ import * as admin from 'firebase-admin';
 export class FirebaseAdminService {
   private firebaseStorage: FirebaseStorage;
   constructor(private readonly config: CommonConfigService) {
-    admin.initializeApp(config.firebaseConfig);
+    admin.initializeApp({
+      credential:admin.credential.cert(config.firebaseConfig),
+      storageBucket:config.firebaseConfig.storageBucket
+    });
     if (admin.apps.length > 0) {
       Logger.log('Connection to Firebase successful');
       this.firebaseStorage = admin.app().storage();
@@ -23,6 +26,10 @@ export class FirebaseAdminService {
       Logger.error('Firebase Storage is not defined');
       throw new InternalServerErrorException();
     }
-    return this.storage;
+    return this.firebaseStorage;
+  }
+
+  get bucket(){
+    return this.firebaseStorage.bucket();
   }
 }
