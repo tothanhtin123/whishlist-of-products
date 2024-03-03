@@ -3,7 +3,7 @@ import { FileHandlerService } from './file-handler.service';
 import { SaveFileResult } from './file-handler.type';
 import { FirebaseAdminService } from 'src/modules/shared/firebase/firebase-admin.service';
 import { FileHelperService } from 'src/modules/shared/file/file-helper.service';
-import { FileHandlerProvider } from './file-handler.enum';
+import { FileStorageProvider } from '../file-storage.enum';
 
 @Injectable()
 export class FirebaseFileHandlerService extends FileHandlerService {
@@ -28,7 +28,7 @@ export class FirebaseFileHandlerService extends FileHandlerService {
     return {
       publicUrl: firebaseFile.publicUrl(),
       path,
-      provider: FileHandlerProvider.FIREBASE,
+      provider: FileStorageProvider.FIREBASE,
     };
   }
 }
