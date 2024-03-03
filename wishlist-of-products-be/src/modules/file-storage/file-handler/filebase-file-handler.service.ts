@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { FileHandlerService } from './file-handler.service';
 import { SaveFileResult } from './file-handler.type';
 import { FirebaseAdminService } from 'src/modules/shared/firebase/firebase-admin.service';
@@ -30,5 +30,16 @@ export class FirebaseFileHandlerService extends FileHandlerService {
       path,
       provider: FileStorageProvider.FIREBASE,
     };
+  }
+
+  async remove(path: string): Promise<boolean> {
+    const firebaseFile = this.admin.bucket.file(path);
+    try {
+      await firebaseFile.delete();
+      return true;
+    } catch (error) {
+      Logger.error(error);
+      return false;
+    }
   }
 }

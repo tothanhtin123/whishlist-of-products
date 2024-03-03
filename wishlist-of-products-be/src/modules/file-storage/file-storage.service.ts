@@ -37,4 +37,12 @@ export class FileStorageService extends BaseService<StoredFileModel> {
       updatedById: userId,
     });
   }
+
+  async removeFile(id: string) {
+    const storedFile = await this.softRemoveById(id);
+
+    //for testing - because stored file was remove softly ==> we don't need to remove file on Firebase
+    // const result = await this.fileHandlerService.remove(storedFile.path);
+    return storedFile;
+  }
 }

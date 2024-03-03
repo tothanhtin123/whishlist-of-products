@@ -4,4 +4,5 @@ export abstract class FileHandlerService {
   constructor(private readonly fileHelperService: FileHelperService) {}
 
   abstract save(file: UploadedFile, folder?: string): Promise<SaveFileResult>;
+  abstract remove(path: string): Promise<boolean>;
 }

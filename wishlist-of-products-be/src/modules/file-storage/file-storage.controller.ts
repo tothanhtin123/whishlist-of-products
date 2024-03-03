@@ -1,5 +1,7 @@
 import {
   Controller,
+  Delete,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -20,5 +22,12 @@ export class FileStorageController {
   @UseStoredFileResponseInterceptor()
   uploadFile(@UploadedFile() file: UploadedFile, @User() user: User) {
     return this.fileStorageService.saveFile(file, user.id);
+  }
+
+  @Delete('delete-file/:id')
+  @UseUserGuard()
+  @UseStoredFileResponseInterceptor()
+  removeFile(@Param('id') id: string) {
+    return this.fileStorageService.removeFile(id);
   }
 }
