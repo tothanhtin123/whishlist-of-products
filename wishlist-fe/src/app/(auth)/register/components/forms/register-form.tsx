@@ -14,11 +14,12 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import Spinning from "@/shared/components/ui/spinning";
-import { api } from "@/utils/custom-axios";
 import { registerRequest } from "@/requests/auth.request";
 import { useToast } from "@/shared/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { appConfig } from "@/consts/app-config";
+import Link from "next/link";
+import { cn } from "@/shared/utils/string";
 //ref: https://www.youtube.com/watch?v=oGq9o2BxlaI&ab_channel=WebDevEducation
 
 const formSchema = z
@@ -139,6 +140,12 @@ const RegisterForm = () => {
           }}
         />
         <Button disabled={isLoading}>{isLoading ? <Spinning /> : "Submit"}</Button>
+        <Link
+          className={cn("text-right underline", isLoading ? "invisible" : "")}
+          href={appConfig.loginPage}
+        >
+          Click here to login
+        </Link>
       </form>
     </Form>
   );

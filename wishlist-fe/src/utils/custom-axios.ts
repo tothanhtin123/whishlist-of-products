@@ -73,7 +73,7 @@ api.interceptors.response.use(
     // refresh token
     if (status === 401) {
       if (!localAuthService.accessToken) {
-        return Promise.reject(error);
+        return Promise.reject(handleError(error));
       }
 
       // isRefreshingToken make sure only one request can send refresh token request

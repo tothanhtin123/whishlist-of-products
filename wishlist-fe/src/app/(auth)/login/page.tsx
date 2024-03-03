@@ -1,7 +1,14 @@
 import React from "react";
+import LoginForm from "./components/forms/login-form";
 
-const LoginPage = () => {
-  return <div>Login</div>;
+type LoginPageProps = {
+  searchParams: {
+    email?: string;
+  };
+};
+
+const LoginPage: React.FC<LoginPageProps> = (props) => {
+  return <LoginForm defaultEmail={props.searchParams.email} />;
 };
 
 export default LoginPage;
