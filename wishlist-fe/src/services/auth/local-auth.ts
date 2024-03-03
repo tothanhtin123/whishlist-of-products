@@ -1,4 +1,4 @@
-import { LocalAuthTokenService } from './local-auth-token';
+import { LocalAuthTokenService } from "./local-auth-token";
 
 class LocalAuthService {
   localAuthTokenService: LocalAuthTokenService;

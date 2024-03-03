@@ -1,13 +1,15 @@
 import AuthProvider from "@/providers/auth.provider";
 import React from "react";
+import MainLayout from "./components/main-layout/main-layout";
+import ProductsSection from "./components/products/products-section";
 
 const WishListLayout = () => {
   return (
-    <main className="min-h-screen">
-      <AuthProvider>
-        <div>123</div>
-      </AuthProvider>
-    </main>
+    <AuthProvider>
+      <MainLayout>
+        <ProductsSection />
+      </MainLayout>
+    </AuthProvider>
   );
 };
 

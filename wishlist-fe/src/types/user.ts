@@ -1,4 +1,6 @@
-export type User = {
+import { BaseModel } from "./base";
+
+export type User = BaseModel & {
   email: string;
   fullName: string;
   accessToken?: string;

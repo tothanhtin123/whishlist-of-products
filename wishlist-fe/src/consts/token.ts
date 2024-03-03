@@ -1,4 +1,4 @@
 export const authTokenKeys = {
-  accessToken: 'accessToken',
-  refreshToken: 'refreshToken',
+  accessToken: "accessToken",
+  refreshToken: "refreshToken",
 };
