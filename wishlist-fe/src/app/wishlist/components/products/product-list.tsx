@@ -1,9 +1,11 @@
 import { Product } from "@/types/product";
-import React, { Fragment } from "react";
+import React from "react";
 import ProductItem from "./product-item";
 
 type ProductListProps = {
   products: Product[];
+  onItemEditClick: (id: string) => void;
+  onItemDeleteClick: (id: string) => void;
 };
 
 const ProductList: React.FC<ProductListProps> = (props) => {
@@ -17,7 +19,14 @@ const ProductList: React.FC<ProductListProps> = (props) => {
   return (
     <ul className="flex flex-col md:flex-row items-center flex-wrap gap-y-6">
       {props.products.map((item: Product) => {
-        return <ProductItem key={`product-${item.id}`} {...item} />;
+        return (
+          <ProductItem
+            onEditClick={props.onItemEditClick}
+            onDeleteClick={props.onItemDeleteClick}
+            key={`product-${item.id}`}
+            {...item}
+          />
+        );
       })}
     </ul>
   );

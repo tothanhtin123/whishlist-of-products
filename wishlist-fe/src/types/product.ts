@@ -1,10 +1,19 @@
+import { ProductCategory, ProductType } from "@/app/enums/product.enum";
 import { BaseModel } from "./base";
-import { StorageFile } from "./stored-file";
+import { StoredFile } from "./stored-file";
 
 export type Product = BaseModel & {
   name: string;
-  category: string;
-  type: string;
+  category: ProductCategory;
+  type: ProductType;
   price: number;
-  thumbnail?: StorageFile;
+  thumbnail?: StoredFile;
+};
+
+export type ProductPayload = {
+  name: string;
+  category: ProductCategory;
+  type: ProductType;
+  price: number;
+  thumbnailId?: string;
 };

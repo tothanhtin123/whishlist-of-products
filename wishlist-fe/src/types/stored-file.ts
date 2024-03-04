@@ -1,6 +1,6 @@
 import { BaseModel } from "./base";
 
-export type StorageFile = BaseModel & {
+export type StoredFile = BaseModel & {
   id: string;
 
   name: string;

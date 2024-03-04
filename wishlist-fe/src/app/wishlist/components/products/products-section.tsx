@@ -23,6 +23,7 @@ import {
 } from "@/shared/components/ui/select";
 import { SortOrder } from "@/app/enums/api-request.enum";
 import { useAuthProvider } from "@/providers/auth.provider";
+import ProductProfileFormModal from "./product-profile-form-modal";
 
 const categoryFilterOptions: { label: string; value: ProductCategory }[] = [
   {
@@ -66,12 +67,13 @@ const ProductsSection = () => {
     page: 0,
     total: 0,
   });
+  const [isOpenProfileForm, setIsOpenProfileForm] = useState(false);
 
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
   const search = searchParams.get("search") || "";
   const filter = searchParams.get("filter") || "";
   const pageCount = Math.ceil(paginationMetaData.total / limit);
-
+  const [selectedProductIndex, setSelectedProductIndex] = useState<number>(-1);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -139,6 +141,46 @@ const ProductsSection = () => {
     }
   };
 
+  const handleItemEditClick = (id: string) => {
+    setSelectedProductIndex(products.findIndex((item) => item.id === id));
+    changeIsOpenProductProfile(true);
+  };
+
+  const handleItemDeleteClick = (id: string) => {};
+
+  const changeIsOpenProductProfile = (value: boolean) => {
+    setIsOpenProfileForm(value);
+  };
+
+  const reFetchData = (queryData: QueryData) => {
+    changeQuery(queryData);
+    fetchProducts({ page: queryData.page, search: queryData.search, filter: queryData.filter });
+  };
+
+  const handleCreateProductSuccess = () => {
+    changeIsOpenProductProfile(false);
+    reFetchData({
+      page: 1,
+      search: "",
+      filter: "",
+    });
+    //reset search input
+    form.reset({
+      search: "",
+      filter: "",
+    });
+  };
+
+  const handleUpdateProductSuccess = () => {
+    changeIsOpenProductProfile(false);
+    reFetchData({
+      page,
+      search,
+      filter,
+    });
+    setSelectedProductIndex(-1);
+  };
+
   useEffect(() => {
     fetchProducts({ page, search, filter });
   }, [page, search, filter]);
@@ -200,11 +242,17 @@ const ProductsSection = () => {
             </Form>
           </div>
           <div>
-            <Button className="w-full lg:w-fit">Create</Button>
+            <Button className="w-full lg:w-fit" onClick={() => changeIsOpenProductProfile(true)}>
+              Create
+            </Button>
           </div>
         </div>
         <div className="mt-5">
-          <ProductList products={products} />
+          <ProductList
+            onItemEditClick={handleItemEditClick}
+            onItemDeleteClick={handleItemDeleteClick}
+            products={products}
+          />
         </div>
         <div>
           {products.length > 0 ? (
@@ -219,6 +267,14 @@ const ProductsSection = () => {
           ) : null}
         </div>
       </div>
+
+      <ProductProfileFormModal
+        isOpen={isOpenProfileForm}
+        defaultProduct={products[selectedProductIndex]}
+        onOpenChange={changeIsOpenProductProfile}
+        onCreateSuccess={handleCreateProductSuccess}
+        onUpdateSuccess={handleUpdateProductSuccess}
+      />
     </section>
   );
 };
