@@ -1,5 +1,5 @@
 # Wishlist Overview
-Wish list is a web app that user can access and add some products they want to buy.
+Wish list is a web app that users can access and add some products they want to buy.
 This project is to show my skills in back-end and also front-end when applying for the web developer position.
 
 # Project Structure
