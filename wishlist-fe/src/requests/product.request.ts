@@ -17,3 +17,6 @@ export const updateProductRequest = (
   id: string,
   data: Partial<ProductPayload>,
 ): ApiResponse<ApiSuccessData<Product>> => api.patch(`${productPrefix}/${id}`, data);
+
+export const deleteProductRequest = (id: string): ApiResponse<ApiSuccessData<Product>> =>
+  api.delete(`${productPrefix}/${id}`);

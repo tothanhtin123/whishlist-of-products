@@ -1,5 +1,5 @@
 "use client";
-import { getProductsRequests } from "@/requests/product.request";
+import { deleteProductRequest, getProductsRequests } from "@/requests/product.request";
 import { useToast } from "@/shared/components/ui/use-toast";
 import { Product } from "@/types/product";
 import React, { Fragment, useEffect, useState } from "react";
@@ -24,6 +24,7 @@ import {
 import { SortOrder } from "@/app/enums/api-request.enum";
 import { useAuthProvider } from "@/providers/auth.provider";
 import ProductProfileFormModal from "./product-profile-form-modal";
+import ProductConfirmDeleteModal from "./product-confirm-delete-modal";
 
 const categoryFilterOptions: { label: string; value: ProductCategory }[] = [
   {
@@ -68,6 +69,7 @@ const ProductsSection = () => {
     total: 0,
   });
   const [isOpenProfileForm, setIsOpenProfileForm] = useState(false);
+  const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
 
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
   const search = searchParams.get("search") || "";
@@ -141,15 +143,22 @@ const ProductsSection = () => {
     }
   };
 
+  const changeIsOpenProductProfile = (value: boolean) => {
+    setIsOpenProfileForm(value);
+  };
+
+  const changeIsOpenDeleteConfirm = (value: boolean) => {
+    setIsOpenDeleteConfirm(value);
+  };
+
   const handleItemEditClick = (id: string) => {
     setSelectedProductIndex(products.findIndex((item) => item.id === id));
     changeIsOpenProductProfile(true);
   };
 
-  const handleItemDeleteClick = (id: string) => {};
-
-  const changeIsOpenProductProfile = (value: boolean) => {
-    setIsOpenProfileForm(value);
+  const handleItemDeleteClick = (id: string) => {
+    setSelectedProductIndex(products.findIndex((item) => item.id === id));
+    changeIsOpenDeleteConfirm(true);
   };
 
   const reFetchData = (queryData: QueryData) => {
@@ -179,6 +188,32 @@ const ProductsSection = () => {
       filter,
     });
     setSelectedProductIndex(-1);
+  };
+
+  const handleDeleteProduct = async () => {
+    const product = products[selectedProductIndex];
+    if (!product) return;
+    try {
+      const result = await deleteProductRequest(product.id);
+      changeIsOpenDeleteConfirm(false);
+      setSelectedProductIndex(-1);
+      if (result.data.data) {
+        reFetchData({
+          page,
+          search,
+          filter,
+        });
+        toast({
+          title: "Delete product successfully",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Get an error when deleting the product",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   useEffect(() => {
@@ -274,6 +309,12 @@ const ProductsSection = () => {
         onOpenChange={changeIsOpenProductProfile}
         onCreateSuccess={handleCreateProductSuccess}
         onUpdateSuccess={handleUpdateProductSuccess}
+      />
+      <ProductConfirmDeleteModal
+        onOpenChange={changeIsOpenDeleteConfirm}
+        onCancel={() => changeIsOpenDeleteConfirm(false)}
+        onConfirm={handleDeleteProduct}
+        isOpen={isOpenDeleteConfirm}
       />
     </section>
   );
